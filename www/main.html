@@ -1,0 +1,312 @@
+<!doctype html>
+
+<html  lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.3">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/jquery.mobile-1.1.0.min.css">
+        <script src="cordova-2.4.0.js" type="text/javascript"></script> 
+        <script src="js/libs/jquery-1.7.1.min.js"></script>
+        <script src="js/libs/jquery.mobile-1.1.0.min.js" type="text/javascript"></script>
+         <script src="js/libs/jquery.xml2json.js" type="text/javascript"></script>   
+        <script src="js/libs/saveToPhotoAlbum.js" type="text/javascript"></script>
+        <script src="js/script.js" type="text/javascript" ></script>
+   
+    </head>
+    <body>
+
+        <div id="container">
+             <div data-role="page" id="radioPlayer">
+                <div  data-role="content" id="mnu_content"  >
+                    <div class="columna1">
+                        <img src="img/racSplash.png" class="logoRadioPrincipal"/>    
+                    </div>
+                    <div class="columna2">
+                        <div class="columna2fila1">
+                            <!--<div id="titulosRadioPrincipal" class="titulosRadioPrincipal">-->
+                                <div id="tituloPrincipal" class="">
+                                    <h3></h3>
+                                </div>
+                                <div id="detallePrincipal" class="">
+                                    <h4></h4>
+                                </div>
+                           <!--</div>-->
+                        </div>
+                        <div class="columna2fila2">
+                            <div class="caratulaPrincipalContenedor">
+                                <img src="img/logo_rac.png" id="caratulaPrincipal" />
+                            </div>
+                        </div>
+                        <div class="columna2fila3">
+                            <div id="botoneraRadioPrincial" class="">
+                                <div id="btnPlayPrincipal" class="btnPlay btnRadio btnRadioPrincipal">
+                                    <img src="img/play.png">
+                                </div>
+                                <div id="btnStop" class=" btnStop btnRadio btnRadioPrincipal">
+                                    <img src="img/pausa.png">
+                                </div>
+                            </div>
+                        </div>
+                            
+                        </div>
+                    <div class="columna3">
+                        <div class="columna3fila1">
+                            <div class="columna3fila1elemento1"><h3>Discos</h3></div>
+                            <div class="columna3fila1elemento2"><img src="" class="caratulaDiscos1"></div>
+                            <div class="columna3fila1elemento3"><img src="" class="caratulaDiscos2"></div>
+                            <div class="columna3fila1elemento4"><img src="" class="caratulaDiscos3"></div>
+
+                        </div>    
+                        <div class="columna3fila2">
+                            <div id="barraSocial"> 
+                                <div id="btnFace" class=" btnFace btnRadio btnRadioPrincipal btnSocial">
+                                    <img src="img/f.png">
+                                </div>
+                                <div id="btnTwitter" class=" btntwitter btnRadio btnRadioPrincipal btnSocial">
+                                    <img src="img/t.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div><!--content-->  
+                <div data-role="footer" data-position="fixed"  id="mnu_ftr" class="menu">       
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#radioPlayer" id="mnu_ftr_btn_radio" data-transition="slide"><img src="img/radio.png" class="iconoMenuRadio"/></a></li>
+                            <li><a href="#post_principal" onClick="traeGaleriaPlayer(postPrincipal)" id="mnu_ftr_btn_menu" data-transition="slide"><img src="img/Home.png" class="iconoMenuHome"/></a></li>
+                            <li><a href="#galeria" data-transition="slide"  class="mnu_ftr_btn_back"><img src="img/galeria.png" class="iconoMenuGaleria"/></a></li>
+                            <li><a href="#wallpaper" onClick=""  id="mnu_ftr_btn_menu" data-transition="slide"><img src="img/wallpaper.png" class="iconoMenuWallpaper"/></a></li>
+                            <li><a href="#share" class="menuItem"  data-transition="slide"><img src="img/compartir.png" class="iconoMenuCompartir"/></a></li>
+                            </ul>
+                    </div><!-- /navbar -->
+                </div><!-- /footer --> 
+            </div><!--page--> 
+            <div data-role="page" id="post_principal">
+                <div data-role="header" data-theme="b" class="ui-barra-header" >
+                    <h2 style="width:80%; display: inline-block;"><img id="logo_rack" src="img/logo_rac.png" /><!--<img class="sponsoredby" src="img/sponsoredby.png" />--> </h2>
+
+                    <div id="muestraRadio" class="muestraRadio"><img src="img/radio.png"></div>
+                </div><!-- header -->
+                <div  data-role="content" id="mnu_content"  >
+                        <div id="radio" class="radio">
+                        <div id="caratula" class="caratula"></div>
+                        <div id="titulosRadio" class="titulosRadio"><div id="titulo" class="titulo"><h3>Radio Futuro</h3></div>
+                        <div id="detalle" class="detalle"><h4>La radio del Rock</h4></div></div>
+                        <div id="btnHide" class="btnHide"></div>
+                        <div id="botoneraRadio" class="botoneraRadio">
+                            <div id="btnPlay" class="btnPlay btnRadio"><img src="img/play.png"></div>
+                            <div id="btnStop" class=" btnStop btnRadio"><img src="img/pausa.png"></div>
+                        </div>
+                       <!-- <div id="mute" class="mute btnRadio"><img src="img/volumen.png">
+                                               </div>
+                                               <input type="range" name="volumen" id="volumen" class="volumen" value="60" min="0" max="100" data-highlight="true"/>-->
+                        
+                    </div>
+                    <h2 id="banda"></h2>
+                    <center >
+                        <div class="post_div_principal">
+                            <a href="#fotoFull" data-transition="slide"> <img src="" alt="" title="" class="post_img_principal" id ="post_img_principal" /></a>
+                        </div>
+                        <div class="div_content" id="div_text" align="justify">
+                            <br><br>
+                        </div>
+                    </center>
+                </div><!--content-->  
+                <div data-role="footer" data-position="fixed"  id="mnu_ftr" class="menu">		
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#radioPlayer" id="mnu_ftr_btn_radio" data-transition="slide"><img src="img/radio.png" class="iconoMenuRadio"/></a></li>
+                            <li><a href="#post_principal" onClick="traeGaleriaPlayer(postPrincipal)" id="mnu_ftr_btn_menu" data-transition="slide"><img src="img/Home.png" class="iconoMenuHome"/></a></li>
+                            <li><a href="#galeria" data-transition="slide"  class="mnu_ftr_btn_back"><img src="img/galeria.png" class="iconoMenuGaleria"/></a></li>
+                            <li><a href="#wallpaper" onClick=""  id="mnu_ftr_btn_menu" data-transition="slide"><img src="img/wallpaper.png" class="iconoMenuWallpaper"/></a></li>
+                            <li><a href="#share" class="menuItem"  data-transition="slide"><img src="img/compartir.png" class="iconoMenuCompartir"/></a></li>
+                            </ul>
+                    </div><!-- /navbar -->
+                </div><!-- /footer --> 
+            </div><!--page--> 
+            
+            <div data-role="page" id="errorPage">
+                <div data-role="header" data-theme="b" class="ui-barra-header" >
+                    <h2 style="width:100%;"><img id="logo_rack" src="img/logo_rac.png"/><!--<img class="sponsoredby" src="img/sponsoredby.png" />--></h2>
+                </div><!-- header -->
+                <div  data-role="content" id="errorContent"  >
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <h1 class="sinConexion"><center>No posee conexión de datos</center></h1>
+                    <br>
+                    <br>
+                    <input type="button" data-theme ="a" value="Salir" onClick="device.exitApp()">
+                </div><!--content-->  
+                <div data-role="footer" data-position="fixed"  id="mnu_ftr" class="menu">       
+                    <h1>&nbsp;</h1>
+                </div><!-- /footer --> 
+            </div><!--page--> 
+            
+            
+            <div data-role="page" id="share">
+                <div data-role="header" data-theme="b" class="ui-barra-header" >
+                    <h2 style="width:80%; display: inline-block;"><img id="logo_rack" src="img/logo_rac.png" /><!--<img class="sponsoredby" src="img/sponsoredby.png" />--> </h2>
+                    <div id="muestraRadio" class="muestraRadio"><img src="img/radio.png"></div>
+                </div><!-- header -->
+                <div  data-role="content" id="mnu_content"   >
+                     <div id="radio" class="radio">
+                        <div id="caratula" class="caratula"></div>
+                        <div id="titulosRadio" class="titulosRadio"><div id="titulo" class="titulo"><h3>Radio Futuro</h3></div>
+                        <div id="detalle" class="detalle"><h4>La radio del Rock</h4></div></div>
+                        <div id="btnHide" class="btnHide"></div>
+                        <div id="botoneraRadio" class="botoneraRadio">
+                            <div id="btnPlay" class="btnPlay btnRadio"><img src="img/play.png"></div>
+                            <div id="btnStop" class=" btnStop btnRadio"><img src="img/pausa.png"></div>
+                        </div>
+                        <!--<div id="mute" class="mute btnRadio"><img src="img/volumen.png"></div>
+                                                <input type="range" name="volumen" id="volumen" class="volumen" value="60" min="0" max="100" data-highlight="true"/>-->
+                        
+                    </div>
+                    <ul data-role="listview" data-theme="d" >
+                        <li><a href="#" id="twitter_href"><img src="http://rockandclick.cl/wp-content/blogs.dir/15/files/icons_mobile/t.png" class="social_img">Twitter</a></li>
+                        <li><a href="#"  id="facebook_href"><img src="http://rockandclick.cl/wp-content/blogs.dir/15/files/icons_mobile/f.png" class="social_img">Facebook</a></li>
+                    </ul>
+                </div><!--content-->  
+                <div data-role="footer" data-position="fixed"  id="mnu_ftr" class="menu">     
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#radioPlayer" id="mnu_ftr_btn_radio" data-transition="slide"><img src="img/radio.png" class="iconoMenuRadio"/></a></li>
+                            <li><a href="#post_principal" onClick="traeGaleriaPlayer(postPrincipal)" id="mnu_ftr_btn_menu" data-transition="slide"><img src="img/Home.png" class="iconoMenuHome"/></a></li>
+                            <li><a href="#galeria" data-transition="slide"  class="mnu_ftr_btn_back"><img src="img/galeria.png" class="iconoMenuGaleria"/></a></li>
+                            <li><a href="#wallpaper" onClick=""  id="mnu_ftr_btn_menu" data-transition="slide"><img src="img/wallpaper.png" class="iconoMenuWallpaper"/></a></li>
+                            <li><a href="#share" class="menuItem"  data-transition="slide"><img src="img/compartir.png" class="iconoMenuCompartir"/></a></li>
+                        </ul>
+                    </div><!-- /navbar -->
+                </div><!-- /footer --> 
+            </div><!-- share -->
+            <!-- Seccion que corresponde a la pagina de Galeria -->
+            <div data-role="page" id="galeria">
+                <div data-role="header" data-theme="b" class="ui-barra-header" >
+                    <h2 style="width:80%; display: inline-block;"><img id="logo_rack" src="img/logo_rac.png" /><!--<img class="sponsoredby" src="img/sponsoredby.png" />--></h2>
+                    <div id="muestraRadio" class="muestraRadio"><img src="img/radio.png"></div>
+                </div><!-- header -->
+                <div  data-role="content" id="mnu_content"  >
+                     <div id="radio" class="radio">
+                        <div id="caratula" class="caratula"></div>
+                        <div id="titulosRadio" class="titulosRadio"><div id="titulo" class="titulo"><h3>Radio Futuro</h3></div>
+                        <div id="detalle" class="detalle"><h4>La radio del Rock</h4></div></div>
+                        <div id="btnHide" class="btnHide"></div>
+                        <div id="botoneraRadio" class="botoneraRadio">
+                            <div id="btnPlay" class="btnPlay btnRadio"><img src="img/play.png"></div>
+                            <div id="btnStop" class=" btnStop btnRadio"><img src="img/pausa.png"></div>
+                        </div>
+                        <!--<div id="mute" class="mute btnRadio"><img src="img/volumen.png"></div>
+                                                <input type="range" name="volumen" id="volumen" class="volumen" value="60" min="0" max="100" data-highlight="true"/>-->
+                        
+                    </div>
+                    <div class="galeria_div" id="galeria_div">
+                    </div>
+                </div><!--content-->  
+                <div data-role="footer" data-position="fixed"  id="mnu_ftr" class="menu">     
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#radioPlayer" id="mnu_ftr_btn_radio" data-transition="slide"><img src="img/radio.png" class="iconoMenuRadio"/></a></li>
+                            <li><a href="#post_principal" onClick="traeGaleriaPlayer(postPrincipal)" id="mnu_ftr_btn_menu" data-transition="slide"><img src="img/Home.png" class="iconoMenuHome"/></a></li>
+                            <li><a href="#galeria" data-transition="slide"  class="mnu_ftr_btn_back"><img src="img/galeria.png" class="iconoMenuGaleria"/></a></li>
+                            <li><a href="#wallpaper" onClick=""  id="mnu_ftr_btn_menu" data-transition="slide"><img src="img/wallpaper.png" class="iconoMenuWallpaper"/></a></li>
+                            <li><a href="#share" class="menuItem"  data-transition="slide"><img src="img/compartir.png" class="iconoMenuCompartir"/></a></li>
+                        </ul>
+                    </div><!-- /navbar -->
+                </div><!-- /footer --> 
+            </div><!--page--> 
+            <!-- Foto Full -->
+            <div data-role="page" id="fotoFull">
+                 <div  data-role="content" id="contentFull"  >
+                    <a href="#post_principal" data-transition="slide" ><img src="" id="galeria_img_full" /></a>
+                 </div><!--content-->  
+            </div><!--page--> 
+            <!-- Secciones de detalle de galeria -->
+            <div data-role="page" id="wallpaper">
+                <div data-role="header" data-theme="b" class="ui-barra-header" >
+                    <h2 style="width:80%; display: inline-block;"><img id="logo_rack" src="img/logo_rac.png" /><!--<img class="sponsoredby" src="img/sponsoredby.png" />--> </h2>
+                    <div id="muestraRadio" class="muestraRadio"><img src="img/radio.png"></div>
+                </div><!-- header -->
+                <div  data-role="content" id="mnu_content"  >
+                     <div id="radio" class="radio">
+                        <div id="caratula" class="caratula"></div>
+                        <div id="titulosRadio" class="titulosRadio"><div id="titulo" class="titulo"><h3>Radio Futuro</h3></div>
+                        <div id="detalle" class="detalle"><h4>La radio del Rock</h4></div></div>
+                        <div id="btnHide" class="btnHide"></div>
+                        <div id="botoneraRadio" class="botoneraRadio">
+                            <div id="btnPlay" class="btnPlay btnRadio"><img src="img/play.png"></div>
+                            <div id="btnStop" class=" btnStop btnRadio"><img src="img/pausa.png"></div>
+                        </div>
+                        <!--<div id="mute" class="mute btnRadio"><img src="img/volumen.png"></div>
+                                                <input type="range" name="volumen" id="volumen" class="volumen" value="60" min="0" max="100" data-highlight="true"/>-->
+                        
+                    </div>
+                    <!-- <h1 class="titulo_galeria">Wallpapers</h1> -->
+                    <div  id="lista_walpapers" >
+                    </div>
+                </div><!--content-->  
+                <div data-role="footer" data-position="fixed"  id="mnu_ftr" class="menu">   
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#radioPlayer" id="mnu_ftr_btn_radio" data-transition="slide"><img src="img/radio.png" class="iconoMenuRadio"/></a></li>
+                            <li><a href="#post_principal" onClick="traeGaleriaPlayer(postPrincipal)" id="mnu_ftr_btn_menu" data-transition="slide"><img src="img/Home.png" class="iconoMenuHome"/></a></li>
+                            <li><a href="#galeria" data-transition="slide"  class="mnu_ftr_btn_back"><img src="img/galeria.png" class="iconoMenuGaleria"/></a></li>
+                            <li><a href="#wallpaper" onClick=""  id="mnu_ftr_btn_menu" data-transition="slide"><img src="img/wallpaper.png" class="iconoMenuWallpaper"/></a></li>        
+                            <li><a href="#share" class="menuItem"  data-transition="slide"><img src="img/compartir.png" class="iconoMenuCompartir"/></a></li>
+                        </ul>
+                    </div><!-- /navbar -->
+                </div><!-- /footer --> 
+            </div><!--page-->   
+            <div data-role="page" id="wallpaperDownload">
+                <div data-role="header" data-theme="b" class="ui-barra-header" >
+                    <h2 style="width:80%; display: inline-block;"><img id="logo_rack" src="img/logo_rac.png" /><!--<img class="sponsoredby" src="img/sponsoredby.png" />--> </h2>
+                    <div id="muestraRadio" class="muestraRadio"><img src="img/radio.png"></div>
+                </div><!-- header -->
+                <div  data-role="content" id="downloadWallpaper"  >
+                     <div id="radio" class="radio">
+                        <div id="caratula" class="caratula"></div>
+                        <div id="titulosRadio" class="titulosRadio"><div id="titulo" class="titulo"><h3>Radio Futuro</h3></div>
+                        <div id="detalle" class="detalle"><h4>La radio del Rock</h4></div></div>
+                        <div id="btnHide" class="btnHide"></div>
+                        <div id="botoneraRadio" class="botoneraRadio">
+                            <div id="btnPlay" class="btnPlay btnRadio"><img src="img/play.png"></div>
+                            <div id="btnStop" class=" btnStop btnRadio"><img src="img/pausa.png"></div>
+                        </div>
+                        <!--<div id="mute" class="mute btnRadio"><img src="img/volumen.png"></div>
+                                                <input type="range" name="volumen" id="volumen" class="volumen" value="60" min="0" max="100" data-highlight="true"/>-->
+                        
+                    </div>
+                    <div class="post_div_principal">
+                        <img src="" alt="" title="" class="wall_img_principal" id ="wall_img_principal" />
+                    </div>
+                    <ul data-role="listview" class="menu-flotante-list" data-theme="d">
+                        <li><a href="#" id="liHD" class="menuItem" onClick="descargaWallpaper($('#wall_img_principal').data().data.images.full.url)">HD - 1024 x 682</a></li>
+                        <li><a href="#" id="liSD" class="menuItem" onClick="descargaWallpaper($('#wall_img_principal').data().data.images.medium.url)">SD - 300 x 199</a></li>
+                    </ul>
+                </div><!--content-->  
+                <div data-role="footer" data-position="fixed"  id="mnu_ftr" class="menu">   
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#radioPlayer" id="mnu_ftr_btn_radio" data-transition="slide"><img src="img/radio.png" class="iconoMenuRadio"/></a></li>
+                            <li><a href="#post_principal" onClick="traeGaleriaPlayer(postPrincipal)" id="mnu_ftr_btn_menu" data-transition="slide"><img src="img/Home.png" class="iconoMenuHome"/></a></li>
+                            <li><a href="#galeria" data-transition="slide"  class="mnu_ftr_btn_back"><img src="img/galeria.png" class="iconoMenuGaleria"/></a></li>
+                            <li><a href="#wallpaper" onClick=""  id="mnu_ftr_btn_menu" data-transition="slide"><img src="img/wallpaper.png" class="iconoMenuWallpaper"/></a></li>
+                            <li><a href="#share" class="menuItem"  data-transition="slide"><img src="img/compartir.png" class="iconoMenuCompartir"/></a></li>
+                        </ul>
+                    </div><!-- /navbar -->
+                </div><!-- /footer --> 
+            </div><!--page--> 
+          
+       </div>  <!--! end of #container -->
+        <div id="carga">
+            <img src="css/images/ajax-loader.gif"><br>
+            Cargando...
+        </div>
+        
+        
+    </body>
+</html>
