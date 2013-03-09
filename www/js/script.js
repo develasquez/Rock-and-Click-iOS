@@ -2,7 +2,7 @@ var iA = 0, iT = 0, iTPlayer = 0, iAPlayer = 0, albumActual = 3, myWidth = 240, 
 var jsonPosts = 0, jsonElPost = {}, jsonGaleria = 0, jsonGaleriaPlayer = {}, jsonDescarga = {}, galeriaSeleccionada = 0;
 var mostroSplash = false, twitterUrl = "", faceUrl = "", networkState = "", nombreGaleria = "", imageList = 0, hayGalerias = false;
 var iniciado = false, imageList = 0, postCargado = 0, galeriaCargada = 0, imageListCargada = 0, postPrincipal = 0;
-var myaudio = {}, myTrackDesription = {"artista": "", "titulo": "", "caratula": "", "dico": "", "ano": ""}, reproduceRadio = false, hora=0;
+var myaudio = {}, myTrackDesription = {"artista": "", "titulo": "", "caratula": "", "dico": "", "ano": ""}, reproduceRadio = false, hora=0, urlWall= "";
 function setHeight(elemento, porcentaje) {
     $(elemento).height($(elemento).parent().height() * porcentaje / 100);
 }
@@ -25,19 +25,21 @@ $(function() {
     setInterval(function() {
         setHeight("#mnu_content", 100);
         setHeight(".columna2fila1", 16);
+        $(".columna3fila2").css("top",$(window).height() - 110);
         if ($(window).width() > $(window).height()) {
             setHeight(".columna2fila2", 55);
             setHeight(".columna2fila3", 20);
             setHeight(".columna3fila1", 75);
-            setHeight(".columna3fila2", 25);
+            //setHeight(".columna3fila2", 25);
         } else {
             setHeight(".columna2fila2", 50);
         }
-        $(".btnPlay").bind("vclick", function() {
+        
+    }, 1000);
+    $(".btnPlay").bind("vclick", function() {
             playStream();
             reproduceRadio = true;
         });
-    }, 1000);
     $(document).swiperight(function(event, data) {
         botonera.back();
     });
@@ -67,7 +69,9 @@ $(function() {
         reproduceRadio = true;
     });
     $(".btnStop").bind("vclick", function() {
+                       alert(3);
         myaudio.pause();
+        myaudio = {};
         reproduceRadio = false;
     });
     $(".mute").bind("vclick", function() {
@@ -110,6 +114,7 @@ $(function() {
             $(this).fadeOut();
             $("#post_div_principal").show();
         });
+                
         calculaTamano(jsonGaleria.gallery[iAPlayer].img[0].height, jsonGaleria.gallery[iAPlayer].img[0].width, $("#galeria_img_full"));
         /*
          var wtTot = parseInt(document.width);
@@ -383,34 +388,56 @@ descargaGaleria = function(idGaleria) {
         }
     }
 };
-descargaWallpaper = function(url) {
+
+toPhotos= function() {
+    function fail(error) {
+        alert(error.code);
+    }
     
+    function gotFS(fileSystem) {
+        var saveToPath = fileSystem.root.fullPath;
+        downloadTo( saveToPath );
+    }
+    
+    function downloadTo(path) {
+        var fileTransfer = new FileTransfer();
+        var imageUri = urlWall;
+        var uri = encodeURI(imageUri);
+        
+        
+        function success() {
+            alert("Listo!!");
+            hideLoading();
+        }
+        
+        function fail(err) {
+            console.log('fail:err:'+err);
+        }
+        
+        fileTransfer.download(
+                              uri,
+                              path + '/' + Date.now() + '.png',
+                              function(entry) {
+                              alert("Descargando");
+                              window.plugins.SaveToPhotoAlbum.saveToPhotoAlbum( success, fail, entry.fullPath );
+                              },
+                              function(error) {
+                              alert("ha ocurrido un error a intentar descargar la imagen")
+                              }
+                              );
+    }
+    
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+    
+    
+};
+
+
+descargaWallpaper = function(url) {
+        urlWall= url;
         showLoading();
         alert("Este proceso puede tardar");
-        var sdPath = 'sdcard/rockandclick/Wallpapers/';
-        Downloader.prototype.downloadFile(
-                url,
-                {
-                    dirName: sdPath
-                },
-        function(e) {
-            if (e.status === 1) {
-                PhoneGap.exec(function(args) {
-                    alert("La imagen se ha descargado exitosamente");
-                }, function(args) {
-                    JSON.stringify(args);
-                }, 'WebIntent', 'custom', [{
-                        action: "setWallpaper",
-                        "path": sdPath + e.file
-                    }]);
-                hideLoading();
-                return false;
-            }
-        },
-                function(e) {
-                    exitoDescarga = false;
-                    alert("Error, al intentar obtener las Imagenes");
-                });
+        toPhotos();
         return false;
     
     
@@ -549,8 +576,8 @@ calculaTamano = function(pWidth, pHeight, imagen) {
     var dPortrait = false;
     var iLandScape = false;
     var iPortrait = false;
-    var dW = document.width;
-    var dH = document.height;
+    var dW = window.innerWidth;
+    var dH = window.innerHeight;
     if (dW > dH) {
         dLandScape = true;
     } else {
@@ -593,10 +620,13 @@ calculaTamano = function(pWidth, pHeight, imagen) {
 };
 function playStream() {
     try {
+        alert(1)
+        myaudio.load();
         myaudio.play();
     }
     catch (e) {
         try {
+            alert(2)
             myaudio = {};
             myaudio = new Audio('http://playerservices.streamtheworld.com/m3u/FUTUROAAC.m3u');
             myaudio.id = 'playerMyAdio';
@@ -615,59 +645,44 @@ function obtieneTrackDescription() {
     respuestaXML = null;
     setInterval(function() {
         if (reproduceRadio === true) {
-            $.get('http://playerservices.streamtheworld.com/public/nowplaying?mountName=FUTURO&numberToFetch=5&eventType=track', function(xml) {//http://200.91.20.197:5010/xml/FUTURO/futuro_stw.xml
-                respuestaXML = $.xml2json(xml);
-                myTrackDesription.artista = respuestaXML.cuepoint.attributes.attribute[3].text; //Artista
-                myTrackDesription.titulo = respuestaXML.cuepoint.attributes.attribute[4].text; //titulo
-                myTrackDesription.caratula = respuestaXML.cuepoint.attributes.attribute[5].text; //caratula
-                myTrackDesription.disco = respuestaXML.cuepoint.attributes.attribute[10].text; //disco
-                myTrackDesription.ano = respuestaXML.cuepoint.attributes.attribute[11].text; //año
-                try {
-                    for (i = 1; i <= respuestaXML.cuepoint.attributes.attribute.length; i++) {
-                        try {
-                            if (respuestaXML.cuepoint.attributes.attribute[i].name === "custom_artist_disco_1_covers_1_url") {
-                                myTrackDesription.disco1 = respuestaXML.cuepoint.attributes.attribute[i].text;
-                            }
-                            if (respuestaXML.cuepoint.attributes.attribute[i].name === "custom_artist_disco_2_covers_1_url") {
-                                myTrackDesription.disco2 = respuestaXML.cuepoint.attributes.attribute[i].text;
-                            }
-                            if (respuestaXML.cuepoint.attributes.attribute[i].name === "custom_artist_disco_3_covers_1_url") {
-                                myTrackDesription.disco3 = respuestaXML.cuepoint.attributes.attribute[i].text;
-                            }
-
-                        } catch (ex) {
-                            //nada
-                        }
-                    }
-                    if (myTrackDesription.disco1.length > 5) {
-                        $(".caratulaDiscos1").show();
-                        $(".caratulaDiscos1").attr("src", myTrackDesription.disco1);
-                    } else {
-                        $(".caratulaDiscos1").hide();
-                    }
-                    if (myTrackDesription.disco2.length > 5) {
-                        $(".caratulaDiscos2").show();
-                        $(".caratulaDiscos2").attr("src", myTrackDesription.disco2);
-                    } else {
-                        $(".caratulaDiscos2").hide();
-                    }
-                    if (myTrackDesription.disco3.length > 5) {
-                        $(".caratulaDiscos3").show();
-                        $(".caratulaDiscos3").attr("src", myTrackDesription.disco3);
-                    } else {
-                        $(".caratulaDiscos3").hide();
-                    }
-                } catch (ex) {
-                    //nada;
-                }
-                $(".titulo h3").text(myTrackDesription.titulo);
+                $.get('http://playerservices.streamtheworld.com/public/nowplaying?mountName=FUTURO&numberToFetch=4&eventType=track', function(xml) {
+                      
+                      respuestaXML = $.xml2json(xml);
+                      
+                      if(respuestaXML.nowplaying_info[0].property[1].text === "Radio Futuro"){
+                        myTrackDesription.artista = respuestaXML.nowplaying_info[0].property[2].text; //Artista
+                        myTrackDesription.titulo = respuestaXML.nowplaying_info[0].property[1].text; //titulo
+                        myTrackDesription.caratula =respuestaXML.nowplaying_info[0].property[3].text; //caratula
+                      }else{
+                      
+                      myTrackDesription.artista = respuestaXML.nowplaying_info[0].property[3].text; //Artista
+                      myTrackDesription.titulo = respuestaXML.nowplaying_info[0].property[1].text; //titulo
+                      myTrackDesription.caratula =respuestaXML.nowplaying_info[0].property[4].text; //caratula
+                      myTrackDesription.disco = respuestaXML.nowplaying_info[0].property[2].text; //disco
+                      myTrackDesription.ano = respuestaXML.nowplaying_info[0].property[2].text; //año
+                      
+                      }
+                      
+                      try {
+                      
+                      
+                      myTrackDesription.disco1 = respuestaXML.nowplaying_info[1].property[4].text;
+                      myTrackDesription.disco2 = respuestaXML.nowplaying_info[2].property[4].text;
+                      myTrackDesription.disco3 = respuestaXML.nowplaying_info[3].property[4].text;
+                      
+                      
+                      
+                      } catch (ex) {
+                      //nada;
+                      }
+                      $(".titulo h3").text(myTrackDesription.titulo);
                 $("#tituloPrincipal h3").text(myTrackDesription.titulo);
                 $(".detalle h4").text(myTrackDesription.artista);
                 $("#detallePrincipal h4").text(myTrackDesription.artista);
                 $(".caratula").css("background-image", "url(" + myTrackDesription.caratula + ")");
                 $("#caratulaPrincipal").attr("src", myTrackDesription.caratula);
                 var faceUrlPrincipal = "http://m.facebook.com/sharer.php?u=106.187.55.9/RockNclick/assets/www/index.php?";
-                var twitterUrlPrincipal = "https://twitter.com/intent/tweet?text=yo%20escucho%20" + encodeURIComponent(myTrackDesription.titulo + " de " + myTrackDesription.artista + " en Radio Futuro 88.9 para Android http://futuro.cl");
+                var twitterUrlPrincipal = "https://twitter.com/intent/tweet?text=yo%20escucho%20" + encodeURIComponent(myTrackDesription.titulo + " de " + myTrackDesription.artista + " en Radio Futuro 88.9 para iOS http://futuro.cl");
                 $("#btnTwitter").click(function() {
                     var ref = window.open(twitterUrlPrincipal, '_blank', 'location=yes');                   
                     //document.location.href = twitterUrlPrincipal;
